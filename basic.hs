@@ -1,5 +1,13 @@
 #!/usr/bin/env stack
--- stack script --resolver lts-8.12 --package conduit-combinators
+{-
+  stack script --resolver lts-8.12
+    --package conduit-combinators
+    --
+    -Wall -fwarn-tabs
+-}
+
+{-# LANGUAGE ExtendedDefaultRules #-}
+
 import Conduit
 
 main = do
