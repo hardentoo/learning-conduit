@@ -1,5 +1,5 @@
 #!/usr/bin/env stack
--- stack script --resolver lts-8.8 --package conduit-combinators
+-- stack script --resolver lts-8.12 --package conduit-combinators
 import Conduit
 
 main = do
