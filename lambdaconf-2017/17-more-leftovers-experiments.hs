@@ -13,8 +13,9 @@ awaitly = do
   optItem <- await
   case optItem of
     Nothing -> liftIO $ putStrLn "done"
-    Just item -> do liftIO $ putStrLn $ "leftover " ++ show item
-                    leftover item
+    Just item -> do
+      liftIO $ putStrLn $ "leftover " ++ show item
+      leftover item
 
 putStringC :: Show a => [Char] -> ConduitM a o IO ()
 putStringC msg = mapM_C $ \item -> putStrLn $ msg ++ " " ++ show item
