@@ -42,8 +42,8 @@ loudSinkNull' = loudSinkNull
 main :: IO ()
 main =
   runConduit $
-  do loudYield 1
-     loudYield' 2
-     loudYield'' 3
-     yieldMany [4 .. 6] .| noisyC
-     .| loudSinkNull
+  (do loudYield 1
+      loudYield' 2
+      loudYield'' 3
+      yieldMany [4 .. 6] .| noisyC) .|
+  loudSinkNull
