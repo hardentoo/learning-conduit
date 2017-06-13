@@ -12,15 +12,12 @@ import Data.Void
 
 -- type Producer (m :: * -> *) o = forall i. ConduitM i o m ()
 noisyC :: Conduit Int IO Int
-noisyC = do
-  optItem <- await
-  case optItem of
-    Nothing -> pure ()
-    Just item -> do
-      liftIO $ putStrLn $ "awaited and yielding: " ++ show item
-      yield item
-      noisyC
+noisyC =
+  awaitForever $ \item -> do
+    liftIO $ putStrLn $ "awaited and yielding: " ++ show item
+    yield item
 
+--    noisyC
 loudYield :: Int -> Producer IO Int
 loudYield i = do
   liftIO . putStrLn $ "yield " ++ show i
