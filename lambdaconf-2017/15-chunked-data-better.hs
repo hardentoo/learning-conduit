@@ -6,18 +6,21 @@
     --
     ghc --make -O2 -Wall -Wall -fwarn-tabs -fno-warn-type-defaults
 -}
+{-# LANGUAGE TypeFamilies #-}
+
 import Conduit
 import Data.HashMap.Strict as HM
 import Data.List
+import Data.MonoTraversable
 import Data.Ord
 import GHC.Word (Word8)
-
-import qualified Data.ByteString as BS
 
 word8ToChar :: Word8 -> Char
 word8ToChar = toEnum . fromEnum
 
-sinkHistogram :: Monad m => ConduitM BS.ByteString o m (HM.HashMap Char Int)
+sinkHistogram ::
+     (Monad m, Element i ~ Word8, MonoFoldable i)
+  => ConduitM i o m (HashMap Char Integer)
 sinkHistogram = foldlCE go HM.empty
   where
     go map1 word = HM.insertWith (+) (word8ToChar word) 1 map1
