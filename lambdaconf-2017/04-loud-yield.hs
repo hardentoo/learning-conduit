@@ -5,18 +5,35 @@
     --
     -Wall -fwarn-tabs -fno-warn-type-defaults
 -}
+{-# language ExistentialQuantification #-}
+{-# language KindSignatures #-}
+{-# language Rank2Types #-}
 
 import Conduit
+-- import Data.Void
+
+-- type Producer (m :: * -> *) o = forall i. ConduitM i o m ()
 
 loudYield :: Int -> ConduitM i Int IO ()
 loudYield x = do
   liftIO $ putStrLn $ "yielding: " ++ show x
   yield x
 
-loudSinkNull :: ConduitM Int o IO ()
-loudSinkNull = mapM_C $ \x -> putStrLn $ "awaited: " ++ show x
+-- The above is just like having a "Producer". Producer is just a type alias.
+loudYield' :: Int -> Producer IO Int
+loudYield' = loudYield
+
+loudYield'' :: Int -> Source IO Int
+loudYield'' = loudYield
+
+loudSinkNull :: forall o. ConduitM Int o IO ()
+loudSinkNull = mapM_C $ \x ->
+  putStrLn $ "awaited: " ++ show x
+
+loudSinkNull' :: Sink Int IO ()
+loudSinkNull' = loudSinkNull
 
 main :: IO ()
 main = runConduit $
-  do { loudYield 1; loudYield 2; loudYield 3 } .|
+  do { loudYield 1; loudYield' 2; loudYield'' 3 } .|
   loudSinkNull
