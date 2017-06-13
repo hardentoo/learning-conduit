@@ -1,4 +1,4 @@
-Examples from [LambdaConf 2017](http://www.snoyman.com/reveal/conduit-yesod#/)
+Working through examples from [LambdaConf 2017](http://www.snoyman.com/reveal/conduit-yesod#/).
 
 ## Some type signatures
 
